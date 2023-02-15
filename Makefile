@@ -12,7 +12,8 @@ SRC_DIR 	:=	./src
 CFLAGS	:=	-Wall -Wextra
 RM		:=	rm -rf
 
-SRC 	:=	main.c
+SRC 	:=	main.c \
+			parse.c
 
 
 OBJ		:=	$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
