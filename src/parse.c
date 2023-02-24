@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/02/14 16:01:27 by jisse            ###   ########.fr       */
+/*   Updated: 2023/02/24 12:03:52 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,28 @@ int     ft_atoi_overflow(const char *str, int *numb)
 	return (0);
 }
 
-int argument_conversion(t_philo *philo, int argc, char *argv[])
+int argument_conversion(t_bin *bin, int argc, char *argv[])
 {
 	int i;
 	int numb[5];
 
 	i = 0;
-	philo->eat_till_full = false;
-	philo->each_philo_must_eat = 0;
+	bin->eat_till_full = false;
+	bin->each_philo_must_eat = 0;
 	if (argc == 6)
-		philo->eat_till_full = true;
+		bin->eat_till_full = true;
 	while (i < argc - 1)
 	{
 		if (ft_atoi_overflow(argv[i + 1], &numb[i]))
 			return (1);
 		i++;
 	}
-	philo->number_of_philo = numb[0];
-	philo->time_to_die = numb[1];
-	philo->time_to_eat = numb[2];
-	philo->time_to_sleep = numb[3];
-	if (philo->eat_till_full)
-		philo->each_philo_must_eat = numb[4];
+	bin->number_of_philo = numb[0];
+	bin->time_to_die = numb[1] * MICRO_SECONDS;
+	bin->time_to_eat = numb[2] * MICRO_SECONDS;
+	bin->time_to_sleep = numb[3] * MICRO_SECONDS;
+	printf("%u, %u, %u\n", bin->time_to_die, bin->time_to_eat, bin->time_to_sleep);
+	if (bin->eat_till_full)
+		bin->each_philo_must_eat = numb[4];
 	return (0);
 }

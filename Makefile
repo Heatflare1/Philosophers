@@ -12,9 +12,11 @@ SRC_DIR 	:=	./src
 CFLAGS	:=	-Wall -Wextra
 RM		:=	rm -rf
 
-SRC 	:=	main.c \
-			parse.c
-
+SRC 	:=	main.c	\
+			parse.c	\
+			philo.c \
+			cleanup.c \
+			time.c
 
 OBJ		:=	$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 SRC		:=	$(addprefix $(SRC_DIR)/,$(SRC))
@@ -37,7 +39,7 @@ White		=	"\033[0;37m"		# White
 ### EXEC #######################################################
 
 ifdef DEBUG
-	DEBUGGING += -fsanitize=address -g
+	DEBUGGING += -fsanitize=thread -g
 endif
 
 all: $(NAME)
