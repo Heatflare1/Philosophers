@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/02/23 18:34:39 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/02 16:53:06 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 	int	i;
 	
 	i = 0;
+	bin->start_of_the_day = gimme_time_milli();
 	while (i < bin->number_of_philo)
 	{
-		philo[i].philo_tag = i + 1;
 		philo[i].bin = bin;
+		philo[i].philo_tag = i + 1;
+		fork_input(&philo[i], i);
 		if(pthread_create(&thread[i], NULL, &test, &philo[i]))
 		{
 			printf("Pthread_Error\n");
@@ -59,6 +61,7 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 		}
 		i++;
 	}
+	
 	return (EXIT_SUCCESS);
 }
 

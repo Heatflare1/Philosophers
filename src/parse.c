@@ -6,11 +6,20 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/02/24 12:03:52 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/02 13:14:09 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	fork_input(t_philo *philo, int index)
+{
+	philo->left_fork = &(philo->bin->fork[index]);
+	if (philo->bin->number_of_philo == index + 1)
+		philo->right_fork = &(philo->bin->fork[0]);
+	else
+		philo->right_fork = &(philo->bin->fork[index + 1]);
+}
 
 int     ft_atoi_overflow(const char *str, int *numb)
 {
