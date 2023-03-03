@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/02 13:14:09 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:45:38 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int argument_conversion(t_bin *bin, int argc, char *argv[])
 	int numb[5];
 
 	i = 0;
+	bin->program_start = false;
 	bin->eat_till_full = false;
 	bin->each_philo_must_eat = 0;
 	if (argc == 6)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:07 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/02 16:36:03 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/03 14:57:58 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_bin
 {
 	int				number_of_philo;
 	int				each_philo_must_eat;
+	bool			program_start;
 	bool			eat_till_full;
 	unsigned int	time_to_die;
 	unsigned int	time_to_eat;
@@ -40,6 +41,7 @@ typedef struct s_philo
 	
 	int				philo_tag;
 	t_bin 			*bin;
+	unsigned long	time_alive;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t *right_fork;
 }	t_philo;
@@ -60,5 +62,9 @@ int	mutex_destroy(t_bin *bin);
 unsigned long	gimme_time_micro(void);
 unsigned long	gimme_time_milli(void);
 void			sleep_tight_philo(unsigned int time);
+
+//Monitoring
+void			*monitoring(void *arg);
+void			printing(t_philo *philo, char *message);
 
 #endif
