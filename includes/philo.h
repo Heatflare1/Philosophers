@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:07 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/03 14:57:58 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/06 16:37:02 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ typedef struct s_bin
 {
 	int				number_of_philo;
 	int				each_philo_must_eat;
-	bool			program_start;
 	bool			eat_till_full;
 	unsigned int	time_to_die;
 	unsigned int	time_to_eat;
 	unsigned int	time_to_sleep;
 	unsigned long	start_of_the_day;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t monitor;
 }	t_bin;
 
 typedef struct s_philo
@@ -44,6 +44,7 @@ typedef struct s_philo
 	unsigned long	time_alive;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t *right_fork;
+	pthread_mutex_t	eating_mutex;
 }	t_philo;
 
 // parce
@@ -64,7 +65,7 @@ unsigned long	gimme_time_milli(void);
 void			sleep_tight_philo(unsigned int time);
 
 //Monitoring
-void			*monitoring(void *arg);
+void			*monitoring(t_philo *philo);
 void			printing(t_philo *philo, char *message);
 
 #endif

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/03 15:04:52 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/06 16:52:20 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	waiting_all_threads(pthread_t monitor_thread, pthread_t *thread, t_bin *bin)
+void	waiting_all_threads(pthread_t *thread, t_bin *bin)
 {
 	int	i;
 	
@@ -22,7 +22,6 @@ void	waiting_all_threads(pthread_t monitor_thread, pthread_t *thread, t_bin *bin
 		pthread_join(thread[i], NULL);
 		i++;
 	}
-	pthread_join(monitor_thread, NULL);
 }
 
 int	fork_mutex_init(t_bin *bin)
@@ -40,18 +39,44 @@ int	fork_mutex_init(t_bin *bin)
 		}
 		fork_index++;
 	}
+	if (pthread_mutex_init(&(bin->monitor), NULL))
+	{
+		printf("Mutex_Error\n");
+		mutex_destroy(bin);
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
-int	thread_creation(pthread_t *monitor_thread, t_philo *philo, pthread_t *thread, t_bin *bin)
+int	philo_mutex_init(t_philo *philo, t_bin *bin)
+{
+	int	philo_index;
+
+	philo_index = 0;
+	while (philo_index < bin->number_of_philo)
+	{
+		if (pthread_mutex_init(&(philo[philo_index].eating_mutex), NULL))
+		{
+			printf("Mutex_Error\n");
+			mutex_destroy(philo->bin);
+			return (EXIT_FAILURE);
+		}
+		philo_index++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 {
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(&(bin->monitor));
 	while (i < bin->number_of_philo)
 	{
 		philo[i].bin = bin;
 		philo[i].philo_tag = i + 1;
+		philo[i].time_alive = gimme_time_micro();
 		fork_input(&philo[i], i);
 		if(pthread_create(&thread[i], NULL, &test, &philo[i]))
 		{
@@ -61,12 +86,9 @@ int	thread_creation(pthread_t *monitor_thread, t_philo *philo, pthread_t *thread
 		}
 		i++;
 	}
-	if (pthread_create(monitor_thread, NULL, &monitoring, philo))
-	{
-		printf("Pthread_Error\n");
-		mutex_destroy(bin);
-		return (EXIT_FAILURE);
-	}
+	philo->bin->start_of_the_day = gimme_time_micro();
+	pthread_mutex_unlock(&(philo->bin->monitor));
+	monitoring(philo);
 	return (EXIT_SUCCESS);
 }
 
@@ -75,7 +97,6 @@ int	main(int argc, char *argv[])
 	t_bin			bin;
 	t_philo			*philo;
 	pthread_t		*thread;
-	pthread_t		monitor_thread;
 
 	if (argc != 5 && argc != 6)
 		return (error_exit("Argument"));
@@ -88,7 +109,9 @@ int	main(int argc, char *argv[])
 		return (malloc_free(thread, philo, &bin));
 	if(fork_mutex_init(&bin))
 		return (malloc_free(thread, philo, &bin));
-	if(thread_creation(&monitor_thread, philo, thread, &bin))
+	if(philo_mutex_init(philo, &bin))
 		return (malloc_free(thread, philo, &bin));
-	waiting_all_threads(monitor_thread, thread, &bin);
+	if(thread_creation(philo, thread, &bin))
+		return (malloc_free(thread, philo, &bin));
+	waiting_all_threads(thread, &bin);
 }
