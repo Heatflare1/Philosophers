@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:07 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/06 16:37:02 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:41:31 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <pthread.h>
 # include <string.h>
+# include "h_colors.h"
 
 # define MICRO_SECONDS 1000
 typedef struct s_bin
@@ -66,6 +67,6 @@ void			sleep_tight_philo(unsigned int time);
 
 //Monitoring
 void			*monitoring(t_philo *philo);
-void			printing(t_philo *philo, char *message);
+void			printing(t_philo *philo, char *color, char *message);
 
 #endif

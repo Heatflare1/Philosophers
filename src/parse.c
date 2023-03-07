@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/06 14:13:50 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/07 11:05:38 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int argument_conversion(t_bin *bin, int argc, char *argv[])
 	bin->time_to_die = numb[1] * MICRO_SECONDS;
 	bin->time_to_eat = numb[2] * MICRO_SECONDS;
 	bin->time_to_sleep = numb[3] * MICRO_SECONDS;
-	printf("%u, %u, %u\n", bin->time_to_die, bin->time_to_eat, bin->time_to_sleep);
 	if (bin->eat_till_full)
 		bin->each_philo_must_eat = numb[4];
 	return (0);

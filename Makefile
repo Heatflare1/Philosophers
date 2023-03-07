@@ -4,7 +4,7 @@ NAME		:=	philo
 DEBUGGING	?=
 
 HEADER		:=	-I includes
-HEADERS		:=	includes/philo.h
+HEADERS		:=	includes/philo.h includes/h_colors.h
 OBJ_DIR		:=	./obj
 SRC_DIR 	:=	./src
 

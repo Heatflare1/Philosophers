@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/06 16:52:20 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/07 12:23:38 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	philo_mutex_init(t_philo *philo, t_bin *bin)
 		if (pthread_mutex_init(&(philo[philo_index].eating_mutex), NULL))
 		{
 			printf("Mutex_Error\n");
-			mutex_destroy(philo->bin);
+			mutex_destroy(bin);
 			return (EXIT_FAILURE);
 		}
 		philo_index++;
@@ -76,7 +76,6 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 	{
 		philo[i].bin = bin;
 		philo[i].philo_tag = i + 1;
-		philo[i].time_alive = gimme_time_micro();
 		fork_input(&philo[i], i);
 		if(pthread_create(&thread[i], NULL, &test, &philo[i]))
 		{
@@ -86,9 +85,8 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 		}
 		i++;
 	}
-	philo->bin->start_of_the_day = gimme_time_micro();
-	pthread_mutex_unlock(&(philo->bin->monitor));
-	monitoring(philo);
+	bin->start_of_the_day = gimme_time_micro();
+	pthread_mutex_unlock(&(bin->monitor));
 	return (EXIT_SUCCESS);
 }
 
@@ -107,11 +105,12 @@ int	main(int argc, char *argv[])
 	philo = malloc(bin.number_of_philo * sizeof(t_philo));
 	if (!thread || !(bin.fork) || !philo)
 		return (malloc_free(thread, philo, &bin));
-	if(fork_mutex_init(&bin))
+	if (fork_mutex_init(&bin))
 		return (malloc_free(thread, philo, &bin));
-	if(philo_mutex_init(philo, &bin))
+	if (philo_mutex_init(philo, &bin))
 		return (malloc_free(thread, philo, &bin));
-	if(thread_creation(philo, thread, &bin))
+	if (thread_creation(philo, thread, &bin))
 		return (malloc_free(thread, philo, &bin));
+	monitoring(philo);
 	waiting_all_threads(thread, &bin);
 }
