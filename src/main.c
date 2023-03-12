@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/09 14:32:34 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/12 15:56:07 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 	{
 		philo[i].bin = bin;
 		philo[i].philo_tag = i + 1;
+		philo[i].done_eating = false;
+		philo[i].number_times_eated = 0;
 		fork_input(&philo[i], i);
 		if(pthread_create(&thread[i], NULL, &philosophers, &philo[i]))
 		{

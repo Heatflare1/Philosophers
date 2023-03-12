@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 12:29:20 by jmeruma           #+#    #+#             */
-/*   Updated: 2023/03/09 14:39:12 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/12 16:38:40 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int	eating(t_philo *philo)
 	pthread_mutex_unlock(&(philo->eating_mutex));
 	if (printing(philo, EATING) == DEATH)
 		return (true);
+	pthread_mutex_lock(&(philo->eating_mutex));
+	philo->number_times_eated++;
+	pthread_mutex_unlock(&(philo->eating_mutex));
 	sleep_tight_philo(philo, philo->bin->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
