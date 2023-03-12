@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/07 12:23:38 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/09 14:32:34 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ int	fork_mutex_init(t_bin *bin)
 		mutex_destroy(bin);
 		return (EXIT_FAILURE);
 	}
+	if (pthread_mutex_init(&(bin->printing), NULL))
+	{
+		printf("Mutex_Error\n");
+		mutex_destroy(bin);
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -77,7 +83,7 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 		philo[i].bin = bin;
 		philo[i].philo_tag = i + 1;
 		fork_input(&philo[i], i);
-		if(pthread_create(&thread[i], NULL, &test, &philo[i]))
+		if(pthread_create(&thread[i], NULL, &philosophers, &philo[i]))
 		{
 			printf("Pthread_Error\n");
 			mutex_destroy(bin);
@@ -85,6 +91,7 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 		}
 		i++;
 	}
+	bin->philo_starved = false;
 	bin->start_of_the_day = gimme_time_micro();
 	pthread_mutex_unlock(&(bin->monitor));
 	return (EXIT_SUCCESS);
