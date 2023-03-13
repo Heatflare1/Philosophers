@@ -6,7 +6,7 @@
 /*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:53:35 by jmeruma           #+#    #+#             */
-/*   Updated: 2023/03/12 16:52:02 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/13 16:16:19 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	philo_eating_counter(t_philo *philo)
 		{
 			philo->bin->number_of_philo_full++;
 			philo->done_eating = true;
-			printf("AAAAA\n");
 			return (true);
 		}
 		return (false);
@@ -66,7 +65,7 @@ int	printing(t_philo *philo, int action)
 	pthread_mutex_lock(&(philo->bin->monitor));
 	philo_died = philo->bin->philo_starved;
 	pthread_mutex_unlock(&(philo->bin->monitor));
-	if (philo->bin->philo_starved == true && action != DIED)
+	if (philo_died == true && action != DIED)
 		return (true);
 	pthread_mutex_lock(&(philo->bin->printing));
 	time = gimme_time_micro() - philo->bin->start_of_the_day;

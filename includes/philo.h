@@ -6,7 +6,7 @@
 /*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:07 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/12 16:26:19 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/13 16:07:57 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_bin
 	int				number_of_philo;
 	int				each_philo_must_eat;
 	int				number_of_philo_full;
+	int				number_of_threads_created;
 	bool			eat_till_full;
 	bool			philo_starved;
 	unsigned int	time_to_die;
@@ -60,7 +61,7 @@ typedef struct s_philo
 	pthread_mutex_t	eating_mutex;
 }	t_philo;
 
-// parce
+//Parce
 void	fork_input(t_philo *philo, int index);
 int		argument_conversion(t_bin *bin, int argc, char *argv[]);
 
@@ -68,9 +69,7 @@ int		argument_conversion(t_bin *bin, int argc, char *argv[]);
 void	*philosophers(void *arg);
 
 //Cleanup
-int	error_exit(char *message);
-int	malloc_free(pthread_t *thread, t_philo *philo, t_bin *bin);
-int	mutex_destroy(t_bin *bin);
+void	philo_cleaning(t_philo *philo, pthread_t *thread);
 
 //Time
 unsigned long	gimme_time_micro(void);
@@ -80,5 +79,15 @@ void			sleep_tight_philo(t_philo *philo, unsigned int time);
 //Monitoring
 void		monitoring(t_philo *philo);
 int			printing(t_philo *philo, int action);
+
+//Error
+int	error(char *message);
+void	fork_mutex_destroy(pthread_mutex_t *fork, int fork_index);
+void	monitor_mutex_destroy(t_bin *bin);
+void	philo_mutex_destroy(t_philo *philo, int philo_index);
+void	printing_mutex_destroy(t_bin *bin);
+void	all_mutex_destroy(t_philo *philo);
+
+int	malloc_error_free(pthread_t *thread, t_philo *philo, t_bin *bin);
 
 #endif

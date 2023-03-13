@@ -6,7 +6,7 @@
 /*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 12:29:20 by jmeruma           #+#    #+#             */
-/*   Updated: 2023/03/12 16:38:40 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/13 16:15:24 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,26 @@ int	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	if (printing(philo, FORK) == DEATH)
+	{
+		pthread_mutex_unlock(philo->left_fork);
 		return (true);
+	}
 	pthread_mutex_lock(philo->right_fork);
 	if (printing(philo, FORK) == DEATH)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return (true);
+	}
 	pthread_mutex_lock(&(philo->eating_mutex));
 	philo->time_alive = gimme_time_micro();
 	pthread_mutex_unlock(&(philo->eating_mutex));
 	if (printing(philo, EATING) == DEATH)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return (true);
+	}
 	pthread_mutex_lock(&(philo->eating_mutex));
 	philo->number_times_eated++;
 	pthread_mutex_unlock(&(philo->eating_mutex));
@@ -75,6 +86,8 @@ void	*philosophers(void *arg)
 	philo = arg;
 	pthread_mutex_lock(&(philo->bin->monitor));
 	pthread_mutex_unlock(&(philo->bin->monitor));
+	if (philo->bin->number_of_threads_created != philo->bin->number_of_philo)
+		return (NULL);
 	pthread_mutex_lock(&(philo->eating_mutex));
 	philo->time_alive = philo->bin->start_of_the_day;
 	pthread_mutex_unlock(&(philo->eating_mutex));

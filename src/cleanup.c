@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 13:32:46 by jmeruma           #+#    #+#             */
-/*   Updated: 2023/02/23 12:24:33 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/13 16:10:57 by jisse            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	malloc_free(pthread_t *thread, t_philo *philo, t_bin *bin)
-{
-	free(philo);
-	free(thread);
-	free(bin->fork);
-	printf("%s: Error\n", "Allocation Failed");
-	return (EXIT_FAILURE);
-}
 
 int	error_exit(char *message)
 {
@@ -27,15 +18,10 @@ int	error_exit(char *message)
 	return (EXIT_FAILURE);
 }
 
-int	mutex_destroy(t_bin *bin)
+void	philo_cleaning(t_philo *philo, pthread_t *thread)
 {
-	int	fork_index;
-
-	fork_index = 0;
-	while (fork_index < bin->number_of_philo)
-	{
-		pthread_mutex_destroy(&(bin->fork[fork_index]));
-		fork_index++;
-	}
-	return (EXIT_SUCCESS);
+	all_mutex_destroy(philo);
+	free(philo->bin->fork);
+	free(thread);
+	free(philo);
 }
