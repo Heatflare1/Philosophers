@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/12 16:22:16 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/14 13:39:22 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void	fork_input(t_philo *philo, int index)
 		philo->right_fork = &(philo->bin->fork[index + 1]);
 }
 
-int     ft_atoi_overflow(const char *str, int *numb)
+int	ft_atoi_overflow(const char *str, int *numb)
 {
-	int     i;
-	int     sign;
+	int	i;
+	int	sign;
 
 	i = 0;
 	*numb = 0;
 	sign = 1;
 	while (str[i] == ' ' || str[i] == '\f' || str[i] == '\n'
-			|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
+		|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
 				i++;
 	if (str[i] == '-')
 			sign = -1;
@@ -49,10 +49,10 @@ int     ft_atoi_overflow(const char *str, int *numb)
 	return (0);
 }
 
-int argument_conversion(t_bin *bin, int argc, char *argv[])
+int	argument_conversion(t_bin *bin, int argc, char *argv[])
 {
-	int i;
-	int numb[5];
+	int	i;
+	int	numb[5];
 
 	i = 0;
 	bin->eat_till_full = false;

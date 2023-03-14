@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jisse <jisse@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:07 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/13 16:07:57 by jisse            ###   ########.fr       */
+/*   Updated: 2023/03/14 13:47:28 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,15 @@
 # include "h_colors.h"
 
 # define MICRO_SECONDS 1000
-# define DIED		0
-# define EATING		1
-# define SLEEPING	2
-# define THINKING	3
-# define FORK		4
 
+typedef enum s_philo_state 
+{
+	DIED,
+	EATING,
+	SLEEPING,
+	THINKING,
+	FORK,
+} t_philo_state;
 
 typedef struct s_bin
 {
@@ -67,6 +70,7 @@ int		argument_conversion(t_bin *bin, int argc, char *argv[]);
 
 //philo
 void	*philosophers(void *arg);
+void	philosopher_died(t_philo *philo);
 
 //Cleanup
 void	philo_cleaning(t_philo *philo, pthread_t *thread);
@@ -82,12 +86,22 @@ int			printing(t_philo *philo, int action);
 
 //Error
 int	error(char *message);
-void	fork_mutex_destroy(pthread_mutex_t *fork, int fork_index);
-void	monitor_mutex_destroy(t_bin *bin);
-void	philo_mutex_destroy(t_philo *philo, int philo_index);
-void	printing_mutex_destroy(t_bin *bin);
-void	all_mutex_destroy(t_philo *philo);
-
 int	malloc_error_free(pthread_t *thread, t_philo *philo, t_bin *bin);
+
+//Mutex_destroy
+void	all_mutex_destroy(t_philo *philo);
+void	monitor_mutex_destroy(t_bin *bin);
+void	printing_mutex_destroy(t_bin *bin);
+void	philo_mutex_destroy(t_philo *philo, int philo_index);
+void	fork_mutex_destroy(pthread_mutex_t *fork, int fork_index);
+
+//Mutex_init
+int	fork_mutex_init(t_bin *bin);
+int monitor_print_mutex_init(t_bin *bin);
+int	philo_mutex_init(t_philo *philo, t_bin *bin);
+
+//Tasks
+int	sleeping(t_philo *philo);
+int	eating(t_philo *philo);
 
 #endif

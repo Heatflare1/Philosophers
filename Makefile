@@ -18,7 +18,10 @@ SRC 	:=	main.c			\
 			cleanup.c		\
 			time.c			\
 			monitoring.c	\
-			error.c
+			error.c			\
+			mutex_destroy.c \
+			mutex_init.c    \
+			tasks.c			
 
 OBJ		:=	$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 SRC		:=	$(addprefix $(SRC_DIR)/,$(SRC))
