@@ -6,13 +6,13 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:04:11 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/14 14:25:51 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/14 15:46:05 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	waiting_all_threads(pthread_t *thread, t_bin *bin)
+void	waiting_all_threads(t_philo *philo, pthread_t *thread, t_bin *bin)
 {
 	int	i;
 
@@ -22,6 +22,7 @@ void	waiting_all_threads(pthread_t *thread, t_bin *bin)
 		pthread_join(thread[i], NULL);
 		i++;
 	}
+	all_mutex_destroy(philo);
 }
 
 int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
@@ -34,6 +35,7 @@ int	thread_creation(t_philo *philo, pthread_t *thread, t_bin *bin)
 	{
 		philo[i].bin = bin;
 		philo[i].philo_tag = i + 1;
+		philo[i].time_alive = 0;
 		philo[i].done_eating = false;
 		philo[i].number_times_eated = 0;
 		fork_input(&philo[i], i);
@@ -73,13 +75,8 @@ int	main(int argc, char *argv[])
 		return (malloc_error_free(thread, philo, &bin));
 	if (philo_mutex_init(philo, &bin))
 		return (malloc_error_free(thread, philo, &bin));
-	if (thread_creation(philo, thread, &bin))
-	{
-		waiting_all_threads(thread, &bin);
-		all_mutex_destroy(philo);
-		return (malloc_error_free(thread, philo, &bin));
-	}
-	monitoring(philo);
-	waiting_all_threads(thread, &bin);
+	if (!thread_creation(philo, thread, &bin))
+		monitoring(philo);
+	waiting_all_threads(philo, thread, &bin);
 	philo_cleaning(philo, thread);
 }
