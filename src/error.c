@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:26:38 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/14 10:38:31 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/15 13:09:43 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,11 @@ int	malloc_error_free(pthread_t *thread, t_philo *philo, t_bin *bin)
 	free(thread);
 	free(bin->fork);
 	return (error("Malloc Allocation"));
+}
+
+void	philo_cleaning(t_philo *philo, pthread_t *thread)
+{
+	free(philo->bin->fork);
+	free(thread);
+	free(philo);
 }

@@ -4,18 +4,17 @@ NAME		:=	philo
 DEBUGGING	?=
 
 HEADER		:=	-I includes
-HEADERS		:=	includes/philo.h includes/h_colors.h
+HEADERS		:=	includes/philo.h
 OBJ_DIR		:=	./obj
 SRC_DIR 	:=	./src
 
 ### UTILS #####################################################
-CFLAGS	:=	-Wall -Wextra
+CFLAGS	:=	-Wall -Wextra -Werror
 RM		:=	rm -rf
 
 SRC 	:=	main.c			\
 			parse.c			\
 			philo.c			\
-			cleanup.c		\
 			time.c			\
 			monitoring.c	\
 			error.c			\

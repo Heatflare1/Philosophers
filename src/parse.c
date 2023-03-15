@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:34:42 by jisse             #+#    #+#             */
-/*   Updated: 2023/03/14 13:39:22 by jmeruma          ###   ########.fr       */
+/*   Updated: 2023/03/15 13:24:48 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,18 @@ int	argument_conversion(t_bin *bin, int argc, char *argv[])
 	int	i;
 	int	numb[5];
 
-	i = 0;
+	i = 1;
 	bin->eat_till_full = false;
 	bin->each_philo_must_eat = 0;
 	bin->number_of_philo_full = 0;
 	if (argc == 6)
 		bin->eat_till_full = true;
-	while (i < argc - 1)
+	while (i < argc)
 	{
-		if (ft_atoi_overflow(argv[i + 1], &numb[i]))
-			return (1);
+		if (ft_atoi_overflow(argv[i], &numb[i - 1]))
+			return (EXIT_FAILURE);
+		if (numb[i - 1] < 1)
+			return (EXIT_FAILURE);
 		i++;
 	}
 	bin->number_of_philo = numb[0];
@@ -72,5 +74,5 @@ int	argument_conversion(t_bin *bin, int argc, char *argv[])
 	bin->time_to_sleep = numb[3] * MICRO_SECONDS;
 	if (bin->eat_till_full)
 		bin->each_philo_must_eat = numb[4];
-	return (0);
+	return (EXIT_SUCCESS);
 }
